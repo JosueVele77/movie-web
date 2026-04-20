@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineStore - Películas Digitales</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+    <div class="logo">CineStore 🎬</div>
+    <div class="cart">
+        Seleccionada <span id="selected-count" class="badge">0</span>
+    </div>
+</header>
+
+<main class="app-shell">
+    <nav class="stepper" aria-label="Flujo de compra">
+        <button class="step-item active" data-step="1">1. Catalogo</button>
+        <button class="step-item" data-step="2">2. Resumen</button>
+        <button class="step-item" data-step="3">3. Pago</button>
+    </nav>
+
+    <section id="step-catalog" class="view-section">
+        <h2 class="section-title">Explora el catalogo por apartados</h2>
+        <div class="catalog-tabs" role="tablist" aria-label="Categorias de peliculas">
+            <button class="catalog-tab active" type="button" data-tab="recent" role="tab">🎬 Añadidos Recientemente</button>
+            <button class="catalog-tab" type="button" data-tab="popular" role="tab">🔥 Populares</button>
+            <button class="catalog-tab" type="button" data-tab="top" role="tab">⭐ Mas Comprados</button>
+        </div>
+
+        <section id="panel-recent" class="catalog-panel">
+            <section class="catalog" id="recent-catalog"></section>
+        </section>
+
+        <section id="panel-popular" class="catalog-panel hidden">
+            <section class="catalog" id="popular-catalog"></section>
+        </section>
+
+        <section id="panel-top" class="catalog-panel hidden">
+            <section class="catalog" id="top-catalog"></section>
+        </section>
+    </section>
+
+    <section id="step-summary" class="view-section hidden">
+        <h2 class="section-title">🧾 Pelicula seleccionada</h2>
+        <div id="selected-movie-card" class="selected-movie-card"></div>
+        <div class="actions-row">
+            <button id="btn-back-to-catalog" class="btn-secondary">⬅ Volver al catalogo</button>
+            <button id="btn-go-to-payment" class="btn-large">Continuar al pago 💳</button>
+        </div>
+    </section>
+
+    <section id="step-payment" class="view-section hidden">
+        <div class="checkout-container">
+            <div id="payment-movie-preview" class="payment-preview"></div>
+            <form id="payment-form" class="payment-form">
+                <h3>Detalles de Pago</h3>
+                <label class="sr-only" for="buyer-name">Nombre completo</label>
+                <input id="buyer-name" type="text" placeholder="Nombre completo" required>
+                <label class="sr-only" for="buyer-email">Correo electronico</label>
+                <input id="buyer-email" type="email" placeholder="Correo electronico" required>
+                <label class="sr-only" for="card-number">Numero de tarjeta</label>
+                <input id="card-number" type="text" placeholder="0000 0000 0000 0000" required>
+                <label class="sr-only" for="card-expiry">Fecha de expiracion</label>
+                <input id="card-expiry" type="text" placeholder="MM/AA" required>
+                <label class="sr-only" for="card-cvc">Codigo CVC</label>
+                <input id="card-cvc" type="text" placeholder="CVC" required>
+                <div class="total-row">
+                    <span>Total a pagar:</span>
+                    <span id="checkout-total">$0.00</span>
+                </div>
+                <div class="actions-row">
+                    <button type="button" id="btn-back-to-summary" class="btn-secondary">⬅ Volver al resumen</button>
+                    <button type="submit" class="btn-buy">Confirmar Pedido</button>
+                </div>
+            </form>
+        </div>
+        <div id="purchase-success" class="success-box hidden">
+            <h3>✅ Compra completada</h3>
+            <p id="success-message"></p>
+            <button id="btn-new-purchase" class="btn-large">Comprar otra pelicula</button>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="footer-grid">
+        <div>
+            <h4>CineStore Digital S.A.</h4>
+            <p>Tu tienda visual de peliculas digitales para disfrutar en casa.</p>
+        </div>
+        <div>
+            <h4>Contacto</h4>
+            <p>Email: soporte@cinestoredigital.com</p>
+            <p>Telefono: +52 55 7812 4455</p>
+        </div>
+        <div>
+            <h4>Oficinas</h4>
+            <p>Av. Reforma 250, Piso 12</p>
+            <p>Ciudad de Mexico, MX</p>
+            <p>Lun a Vie: 9:00 a 18:00</p>
+        </div>
+    </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
