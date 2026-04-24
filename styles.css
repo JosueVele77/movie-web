@@ -28,16 +28,41 @@ header {
     color: var(--accent-color);
 }
 
-.cart {
-    font-size: 1.2rem;
-    font-weight: bold;
+.main-nav {
+    display: flex;
+    gap: 20px;
 }
 
-.badge {
-    background-color: var(--accent-color);
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 1rem;
+.main-nav a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.main-nav a:hover {
+    color: var(--accent-color);
+}
+
+.search-bar {
+    display: flex;
+}
+
+.search-bar input {
+    background: var(--card-bg);
+    border: 1px solid #333;
+    color: var(--text-color);
+    padding: 8px 12px;
+    border-radius: 5px 0 0 5px;
+}
+
+.search-bar button {
+    background: var(--accent-color);
+    border: none;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
 }
 
 .section-title {
@@ -54,25 +79,54 @@ header {
     animation: fadeIn 0.25s ease;
 }
 
-.stepper {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
-    padding: 24px 50px 0;
+.slideshow-container {
+    position: relative;
+    max-width: 100%;
+    margin: auto;
 }
 
-.step-item {
-    background: #222;
-    border: 1px solid #333;
-    color: #ddd;
-    font-size: 1rem;
-    padding: 10px 14px;
+.slide {
+    display: none;
 }
 
-.step-item.active {
-    background: var(--accent-color);
-    color: #fff;
-    border-color: transparent;
+.slide img {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+}
+
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+}
+
+.next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+.prev:hover, .next:hover {
+    background-color: rgba(0,0,0,0.8);
+}
+
+.fade {
+    animation-name: fade;
+    animation-duration: 1.5s;
+}
+
+@keyframes fade {
+    from {opacity: .4}
+    to {opacity: 1}
 }
 
 .catalog-tabs {
@@ -86,6 +140,8 @@ header {
     background: #1f1f1f;
     border: 1px solid #333;
     color: #ddd;
+    padding: 10px 14px;
+    font-size: 1rem;
 }
 
 .catalog-tab.active {
@@ -160,120 +216,6 @@ button:hover {
 
 .hidden { display: none; }
 
-.sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    border: 0;
-}
-
-.actions-row {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 50px;
-}
-
-.btn-secondary {
-    background: #444;
-}
-
-.btn-secondary:hover {
-    background: #555;
-}
-
-.selected-movie-card {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24px;
-    margin: 20px 50px 0;
-    padding: 20px;
-    border-radius: 12px;
-    background: #1f1f1f;
-    border: 1px solid #2d2d2d;
-}
-
-.selected-movie-card img {
-    width: 220px;
-    border-radius: 10px;
-}
-
-.selected-movie-info {
-    max-width: 540px;
-}
-
-.checkout-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 40px;
-    padding: 50px;
-    justify-content: center;
-}
-
-.payment-preview {
-    background: #1e1e1e;
-    border-radius: 15px;
-    padding: 24px;
-    width: 100%;
-    max-width: 290px;
-    text-align: center;
-}
-
-.payment-preview img {
-    width: 100%;
-    border-radius: 10px;
-    margin-bottom: 10px;
-}
-
-.payment-form {
-    background: #1e1e1e;
-    padding: 30px;
-    border-radius: 15px;
-    width: 100%;
-    max-width: 400px;
-}
-
-.payment-form input {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 15px;
-    background: #333;
-    border: 1px solid #444;
-    color: white;
-    border-radius: 5px;
-}
-
-.total-row {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin: 20px 0;
-    display: flex;
-    justify-content: space-between;
-    color: #4caf50;
-}
-
-.btn-large {
-    display: block;
-    margin: 40px auto;
-    width: 300px;
-    font-size: 1.2rem;
-}
-
-.success-box {
-    max-width: 620px;
-    margin: 0 auto;
-    background: #1e1e1e;
-    border: 1px solid #2f8f4e;
-    border-radius: 14px;
-    padding: 30px;
-    text-align: center;
-}
-
 .site-footer {
     background: #0d0d0d;
     border-top: 1px solid #222;
@@ -298,6 +240,28 @@ button:hover {
     line-height: 1.4;
 }
 
+.social-media {
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid #222;
+    margin-top: 20px;
+}
+
+.social-media a {
+    color: var(--text-color);
+    margin: 0 15px;
+    font-size: 1.5rem;
+    transition: color 0.3s ease;
+}
+
+.social-media a:hover {
+    color: var(--accent-color);
+}
+
+.map-container {
+    padding: 20px 50px;
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -312,24 +276,28 @@ button:hover {
 @media (max-width: 720px) {
     header {
         padding: 16px 20px;
+        flex-wrap: wrap;
     }
 
-    .stepper,
-    .catalog-tabs,
+    .main-nav {
+        order: 2;
+        width: 100%;
+        justify-content: center;
+        margin-top: 15px;
+    }
+
+    .search-bar {
+        order: 1;
+    }
+
     .section-title,
     .catalog,
-    .actions-row,
-    .selected-movie-card,
-    .checkout-container,
-    .site-footer {
+    .site-footer,
+    .map-container {
         padding-left: 20px;
         padding-right: 20px;
         margin-left: 0;
         margin-right: 0;
-    }
-
-    .stepper {
-        grid-template-columns: 1fr;
     }
 
     .catalog-tabs {
@@ -339,13 +307,4 @@ button:hover {
     .footer-grid {
         grid-template-columns: 1fr;
     }
-
-    .actions-row {
-        flex-direction: column;
-    }
-
-    .btn-large {
-        width: 100%;
-    }
 }
-
