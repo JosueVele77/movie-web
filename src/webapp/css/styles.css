@@ -1,9 +1,19 @@
-/* Variables para mantener los colores consistentes */
+/* Variables para mantener los colores consistentes y soportar Bootstrap 5 theming */
 :root {
-    --bg-color: #141414;
-    --card-bg: #2b2b2b;
+    --bg-color: #141414; /* Fondo principal oscuro */
+    --card-bg: #272932; /* Fondo de tarjetas, un gris oscuro */
     --text-color: #ffffff;
-    --accent-color: #e50914; /* Rojo estilo plataforma de streaming */
+    --accent-color: #f1b34e; /* Tono naranja/dorado del mockup */
+    --accent-hover: #d69837;
+    --nav-bg: #141418; /* Fondo de navegación oscuro */
+}
+
+/* Variables para el modo claro */
+[data-bs-theme="light"] {
+    --bg-color: #f4f5f7; /* Fondo principal claro */
+    --card-bg: #ffffff; /* Fondo de tarjetas blanco */
+    --text-color: #212529; /* Color de texto oscuro para contraste */
+    --nav-bg: #ffffff; /* Fondo de navegación blanco */
 }
 
 body {
@@ -11,213 +21,194 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--bg-color);
     color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transición suave para el cambio de tema */
 }
 
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 50px;
-    background-color: #000000;
-    border-bottom: 2px solid var(--card-bg);
-}
-
-.logo {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: var(--accent-color);
-}
-
-.main-nav {
-    display: flex;
-    gap: 20px;
-}
-
-.main-nav a {
-    color: var(--text-color);
-    text-decoration: none;
-    font-size: 1.1rem;
-    transition: color 0.3s ease;
-}
-
-.main-nav a:hover {
-    color: var(--accent-color);
-}
-
-.search-bar {
-    display: flex;
-}
-
-.search-bar input {
-    background: var(--card-bg);
-    border: 1px solid #333;
-    color: var(--text-color);
-    padding: 8px 12px;
-    border-radius: 5px 0 0 5px;
-}
-
-.search-bar button {
-    background: var(--accent-color);
-    border: none;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 0 5px 5px 0;
-    cursor: pointer;
-}
-
-.section-title {
-    padding: 0 50px;
-    margin-top: 40px;
-    font-size: 1.5rem;
-}
-
-.app-shell {
-    padding-bottom: 40px;
-}
-
-.view-section {
-    animation: fadeIn 0.25s ease;
-}
-
-.slideshow-container {
-    position: relative;
-    max-width: 100%;
-    margin: auto;
-}
-
-.slide {
-    display: none;
-}
-
-.slide img {
-    width: 100%;
-    height: 500px;
-    object-fit: cover;
-}
-
-.prev, .next {
-    cursor: pointer;
-    position: absolute;
+/* Planet Background */
+.planet {
+    position: fixed;
     top: 50%;
-    width: auto;
-    padding: 16px;
-    margin-top: -22px;
-    color: white;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #ff8c00, #ff3d00, #8b0000);
+    box-shadow: inset -20px -20px 40px rgba(0, 0, 0, 0.7),
+                0 0 50px rgba(255, 140, 0, 0.4);
+    z-index: -1;
+    opacity: 0.8;
+}
+
+[data-bs-theme="light"] .planet {
+    opacity: 0.2; /* Lighter in light mode so it doesn't overpower text */
+    box-shadow: inset -20px -20px 40px rgba(0, 0, 0, 0.2),
+                0 0 50px rgba(255, 140, 0, 0.1);
+}
+
+/* Stars Background */
+#stars-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    background: radial-gradient(circle at 20% 20%, rgba(255, 170, 64, 0.08), transparent 40%),
+                radial-gradient(circle at 80% 0%, rgba(255, 255, 255, 0.06), transparent 35%),
+                #0a0a0f;
+    overflow: hidden;
+}
+
+[data-bs-theme="light"] #stars-container {
+    background: radial-gradient(circle at 20% 20%, rgba(255, 170, 64, 0.18), transparent 45%),
+                radial-gradient(circle at 80% 0%, rgba(0, 0, 0, 0.08), transparent 40%),
+                #e7e9ef;
+}
+
+.star {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    animation: move linear infinite;
+}
+
+[data-bs-theme="light"] .star {
+    background: #555; /* Darker stars in light mode */
+}
+
+@keyframes move {
+    from {transform: translateY(0px);}
+    to {transform: translateY(-2000px);}
+}
+
+/* Navbar overrides */
+.navbar-brand {
+    color: var(--accent-color) !important;
     font-weight: bold;
-    font-size: 18px;
-    transition: 0.6s ease;
-    border-radius: 0 3px 3px 0;
-    user-select: none;
+    font-size: 2.2rem !important; /* Increased font size */
+    text-decoration: none;
+    border: none !important;
+    padding: 0 !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 15px; /* Increased gap */
 }
 
-.next {
-    right: 0;
-    border-radius: 3px 0 0 3px;
+.navbar-brand .brand-logo {
+    width: 65px !important; /* Increased logo size */
+    height: 65px !important;
+    object-fit: contain;
+    display: block;
 }
 
-.prev:hover, .next:hover {
-    background-color: rgba(0,0,0,0.8);
-}
 
-.fade {
-    animation-name: fade;
-    animation-duration: 1.5s;
-}
-
-@keyframes fade {
-    from {opacity: .4}
-    to {opacity: 1}
-}
-
-.catalog-tabs {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
-    padding: 10px 50px 0;
-}
-
-.catalog-tab {
-    background: #1f1f1f;
-    border: 1px solid #333;
-    color: #ddd;
-    padding: 10px 14px;
-    font-size: 1rem;
-}
-
-.catalog-tab.active {
-    background: #2b2b2b;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 1px var(--accent-color) inset;
-}
-
-.catalog-panel {
-    animation: fadeIn 0.25s ease;
-}
-
-/* Sistema de grilla responsivo para el catálogo */
-.catalog {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 30px;
-    padding: 20px 50px 50px 50px;
-}
-
+/* Estilos para las tarjetas de películas estilo mockup */
 .movie-card {
     background-color: var(--card-bg);
-    border-radius: 10px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.05); /* Borde sutil para modo oscuro */
+}
+
+/* Sombra y borde para modo claro */
+[data-bs-theme="light"] .movie-card {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.05);
 }
 
 .movie-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 25px rgba(229, 9, 20, 0.3);
+    transform: translateY(-5px);
 }
 
 .movie-card img {
     width: 100%;
-    height: 320px;
+    height: 300px;
     object-fit: cover;
-    border-bottom: 3px solid var(--accent-color);
 }
 
 .movie-info {
     padding: 15px;
 }
 
-.movie-info h3 {
-    margin: 0 0 10px 0;
-    font-size: 1.2rem;
-}
-
-.price {
-    color: #4caf50;
+.movie-title {
+    font-size: 1.1rem;
     font-weight: bold;
-    font-size: 1.3rem;
-    margin: 0 0 15px 0;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-button {
-    width: 100%;
-    padding: 12px;
+.movie-meta {
+    font-size: 0.8rem;
+    color: #888;
+    margin-bottom: 8px;
+}
+
+.stars {
+    color: var(--accent-color);
+    font-size: 0.85rem;
+    margin-bottom: 15px;
+}
+
+/* Botones de las tarjetas */
+.card-actions .btn {
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.btn-card-comprar {
     background-color: var(--accent-color);
-    color: white;
+    color: #000;
     border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.2s;
 }
 
-button:hover {
-    background-color: #b20710;
+.btn-card-comprar:hover {
+    background-color: var(--accent-hover);
+}
+
+.btn-card-alquilar {
+    background-color: transparent;
+    color: var(--text-color);
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+[data-bs-theme="light"] .btn-card-alquilar {
+    border: 1px solid #ccc;
+    color: #212529; /* Fix text color in light mode */
+}
+
+.btn-card-alquilar:hover {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
 }
 
 .hidden { display: none; }
 
+/* Text color fixes for light mode */
+[data-bs-theme="light"] .nav-link,
+[data-bs-theme="light"] .section-title,
+[data-bs-theme="light"] .catalog-tab {
+    color: #212529 !important;
+}
+
+[data-bs-theme="light"] .hero-banner h1,
+[data-bs-theme="light"] .hero-banner p {
+    color: #fff !important; /* Keep banner text white */
+}
+
+/* Fix navbar text color in light mode */
+[data-bs-theme="light"] .navbar-nav .nav-link {
+    color: #212529 !important;
+}
+
 .site-footer {
-    background: #0d0d0d;
+    background: #0d0d0d; /* Fondo oscuro sólido, se mantiene igual en modo claro */
     border-top: 1px solid #222;
     padding: 28px 50px 34px;
 }
@@ -238,6 +229,7 @@ button:hover {
     margin: 6px 0;
     color: #c9c9c9;
     line-height: 1.4;
+    font-size: 1rem;
 }
 
 .social-media {
@@ -248,7 +240,7 @@ button:hover {
 }
 
 .social-media a {
-    color: var(--text-color);
+    color: #ffffff;
     margin: 0 15px;
     font-size: 1.5rem;
     transition: color 0.3s ease;
@@ -259,51 +251,10 @@ button:hover {
 }
 
 .map-container {
-    padding: 20px 50px;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(6px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    padding: 20px 0; /* Ajustado para alinear con Bootstrap */
 }
 
 @media (max-width: 720px) {
-    header {
-        padding: 16px 20px;
-        flex-wrap: wrap;
-    }
-
-    .main-nav {
-        order: 2;
-        width: 100%;
-        justify-content: center;
-        margin-top: 15px;
-    }
-
-    .search-bar {
-        order: 1;
-    }
-
-    .section-title,
-    .catalog,
-    .site-footer,
-    .map-container {
-        padding-left: 20px;
-        padding-right: 20px;
-        margin-left: 0;
-        margin-right: 0;
-    }
-
-    .catalog-tabs {
-        grid-template-columns: 1fr;
-    }
-
     .footer-grid {
         grid-template-columns: 1fr;
     }

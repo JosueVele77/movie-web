@@ -1,8 +1,8 @@
-// 1. Configuracion de la API
+// 1. Configuración de la API
 const API_KEY = 'e8351fedf872a5de8e6614d8f166a260';
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMG_URL = 'https://image.tmdb.org/t/p/w500';
-const CATALOG_LIMIT = 50;
+const CATALOG_LIMIT = 20; // Reducido a 20 para la grilla
 
 const state = {
     activeCatalogTab: 'recent'
@@ -14,41 +14,48 @@ const catalogPanels = {
     top: document.getElementById('panel-top')
 };
 
-// --- Slideshow ---
-let slideIndex = 1;
-showSlides(slideIndex);
+// --- Animated Starfield ---
+const starsContainer = document.getElementById('stars-container');
+const numStars = 200;
 
-function plusSlides(n) {
-  showSlides(slideIndex += n);
+for (let i = 0; i < numStars; i++) {
+    let star = document.createElement('div');
+    star.className = 'star';
+    let x = Math.random() * 100;
+    let y = Math.random() * 100;
+    let size = Math.random() * 2;
+    let duration = Math.random() * 2 + 1;
+
+    star.style.left = `${x}%`;
+    star.style.top = `${y}%`;
+    star.style.width = `${size}px`;
+    star.style.height = `${size}px`;
+    star.style.animationDuration = `${duration}s`;
+    star.style.animationDelay = `${Math.random() * 2}s`;
+
+    starsContainer.appendChild(star);
 }
 
-function showSlides(n) {
-  let i;
-  let slides = document.getElementsByClassName("slide");
-  if (n > slides.length) {slideIndex = 1}
-  if (n < 1) {slideIndex = slides.length}
-  for (i = 0; i < slides.length; i++) {
-    slides[i].style.display = "none";
-  }
-  slides[slideIndex-1].style.display = "block";
-}
+// --- Sistema de Modo Claro/Oscuro ---
+const themeToggleBtn = document.getElementById('theme-toggle');
+const htmlElement = document.documentElement;
 
-// Automatic slideshow
-setInterval(() => {
-    plusSlides(1);
-}, 8000); // Change image every 8 seconds
+themeToggleBtn.addEventListener('click', () => {
+    const currentTheme = htmlElement.getAttribute('data-bs-theme');
+    const icon = themeToggleBtn.querySelector('i');
 
+    if (currentTheme === 'dark') {
+        htmlElement.setAttribute('data-bs-theme', 'light');
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+    } else {
+        htmlElement.setAttribute('data-bs-theme', 'dark');
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+    }
+});
 
-function getRandomPrice() {
-    const min = 4.99;
-    const max = 19.99;
-    return Number((Math.random() * (max - min) + min).toFixed(2));
-}
-
-function formatPrice(value) {
-    return `$${value.toFixed(2)}`;
-}
-
+// --- Lógica del Catálogo ---
 function updateCatalogTabs() {
     Object.entries(catalogPanels).forEach(([tab, panel]) => {
         panel.classList.toggle('hidden', tab !== state.activeCatalogTab);
@@ -57,6 +64,12 @@ function updateCatalogTabs() {
     document.querySelectorAll('.catalog-tab').forEach(button => {
         button.classList.toggle('active', button.dataset.tab === state.activeCatalogTab);
     });
+}
+
+// Generador de estrellas aleatorias para el diseño
+function getRandomStars() {
+    const starsHtml = '<i class="fas fa-star"></i>'.repeat(4) + '<i class="fas fa-star-half-alt"></i>';
+    return starsHtml;
 }
 
 async function fetchAndRenderMovies(endpoint, containerId) {
@@ -72,7 +85,7 @@ async function fetchAndRenderMovies(endpoint, containerId) {
         container.innerHTML = '';
 
         if (!movies.length) {
-            container.innerHTML = '<p style="padding-left: 50px; color: #f7c04a;">No hay peliculas disponibles por ahora.</p>';
+            container.innerHTML = '<p class="text-warning">No hay películas disponibles por ahora.</p>';
             return;
         }
 
@@ -81,23 +94,32 @@ async function fetchAndRenderMovies(endpoint, containerId) {
                 id: movie.id,
                 title: movie.title,
                 posterPath: movie.poster_path,
-                price: getRandomPrice()
+                date: movie.release_date ? movie.release_date.split('-')[0] : '2024'
             };
 
-            const card = document.createElement('div');
-            card.className = 'movie-card';
-            card.innerHTML = `
-                <img src="${IMG_URL}${movieData.posterPath}" alt="Poster de ${movieData.title}">
-                <div class="movie-info">
-                    <h3>${movieData.title}</h3>
-                    <p class="price">${formatPrice(movieData.price)}</p>
+            // Estructura de la tarjeta adaptada al mockup
+            const col = document.createElement('div');
+            col.className = 'col';
+            col.innerHTML = `
+                <div class="movie-card h-100 d-flex flex-column">
+                    <img src="${IMG_URL}${movieData.posterPath}" alt="${movieData.title}">
+                    <div class="movie-info d-flex flex-column flex-grow-1">
+                        <h3 class="movie-title">${movieData.title}</h3>
+                        <div class="movie-meta">Género · Acción de ${movieData.date}</div>
+                        <div class="stars mb-3">${getRandomStars()}</div>
+                        
+                        <div class="card-actions d-flex gap-2 mt-auto">
+                            <button class="btn btn-card-comprar flex-grow-1">COMPRAR</button>
+                            <button class="btn btn-card-alquilar flex-grow-1">ALQUILAR</button>
+                        </div>
+                    </div>
                 </div>
             `;
-            container.appendChild(card);
+            container.appendChild(col);
         });
     } catch (error) {
-        console.error('Hubo un error cargando las peliculas:', error);
-        container.innerHTML = '<p style="padding-left: 50px; color: red;">Error al cargar el catalogo. Verifica tu API Key.</p>';
+        console.error('Hubo un error cargando las películas:', error);
+        container.innerHTML = '<p class="text-danger">Error al cargar el catálogo. Verifica tu conexión.</p>';
     }
 }
 
@@ -108,7 +130,7 @@ document.querySelectorAll('.catalog-tab').forEach(button => {
     });
 });
 
-// Inicializacion de catalogos
+// Inicialización de catálogos
 fetchAndRenderMovies('/movie/now_playing', 'recent-catalog');
 fetchAndRenderMovies('/movie/popular', 'popular-catalog');
 fetchAndRenderMovies('/movie/top_rated', 'top-catalog');
