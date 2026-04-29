@@ -135,3 +135,90 @@ fetchAndRenderMovies('/movie/now_playing', 'recent-catalog');
 fetchAndRenderMovies('/movie/popular', 'popular-catalog');
 fetchAndRenderMovies('/movie/top_rated', 'top-catalog');
 updateCatalogTabs();
+
+// --- Login / Registro (solo UI demo) ---
+function setupAuthForms() {
+    const loginForm = document.getElementById('login-form');
+    if (loginForm) {
+        loginForm.addEventListener('submit', (event) => {
+            // Demo: evita recargar la página.
+            event.preventDefault();
+
+            const loginModalEl = document.getElementById('loginModal');
+            if (window.bootstrap && loginModalEl) {
+                window.bootstrap.Modal.getOrCreateInstance(loginModalEl).hide();
+            }
+        });
+    }
+
+    const signupForm = document.getElementById('signup-form');
+    if (!signupForm) return;
+
+    const successAlert = document.getElementById('signupSuccess');
+    const passwordEl = document.getElementById('signupPassword');
+    const confirmEl = document.getElementById('signupPasswordConfirm');
+    const termsEl = document.getElementById('signupTerms');
+
+    const markControl = (el) => {
+        if (!el) return;
+        el.classList.remove('is-valid', 'is-invalid');
+        el.classList.add(el.checkValidity() ? 'is-valid' : 'is-invalid');
+    };
+
+    const validatePasswordMatch = () => {
+        if (!passwordEl || !confirmEl) return true;
+        const matches = passwordEl.value === confirmEl.value;
+        confirmEl.setCustomValidity(matches ? '' : 'password-mismatch');
+        return matches;
+    };
+
+    signupForm.addEventListener('input', (event) => {
+        if (successAlert) successAlert.classList.add('d-none');
+
+        if (event.target === passwordEl || event.target === confirmEl) {
+            validatePasswordMatch();
+        }
+
+        markControl(event.target);
+        if (termsEl && event.target === termsEl) {
+            markControl(termsEl);
+        }
+    });
+
+    signupForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        if (successAlert) successAlert.classList.add('d-none');
+
+        // Ajusta validez personalizada antes de validar.
+        validatePasswordMatch();
+
+        signupForm.classList.add('was-validated');
+
+        // Marca controles explícitamente para que se note visualmente.
+        signupForm.querySelectorAll('input').forEach(markControl);
+
+        if (!signupForm.checkValidity()) {
+            return;
+        }
+
+        // Demo OK: muestra mensaje, resetea y vuelve al login.
+        if (successAlert) successAlert.classList.remove('d-none');
+
+        signupForm.reset();
+        signupForm.classList.remove('was-validated');
+        signupForm.querySelectorAll('input').forEach(el => el.classList.remove('is-valid', 'is-invalid'));
+
+        const signupModalEl = document.getElementById('signupModal');
+        const loginModalEl = document.getElementById('loginModal');
+
+        if (window.bootstrap && signupModalEl && loginModalEl) {
+            // Evita superponer dos modals/backdrops.
+            signupModalEl.addEventListener('hidden.bs.modal', () => {
+                window.bootstrap.Modal.getOrCreateInstance(loginModalEl).show();
+            }, { once: true });
+            window.bootstrap.Modal.getOrCreateInstance(signupModalEl).hide();
+        }
+    });
+}
+
+setupAuthForms();

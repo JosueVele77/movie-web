@@ -5,6 +5,7 @@
     <title>CineStore - Películas Digitales</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -14,7 +15,7 @@
 <nav class="navbar navbar-expand-lg custom-navbar py-3">
     <div class="container-fluid px-4 px-lg-5">
         <a class="navbar-brand d-flex align-items-center gap-2" href="#">
-            <img src="img/logo.png" alt="CineStore" class="brand-logo">
+            <img src="img/logo-cinestore.svg" alt="CineStore" class="brand-logo">
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,7 +34,10 @@
                 <li class="nav-item"><a class="nav-link active" href="#">Cartelera</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Próximamente</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Entradas</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Mi Perfil</a></li>
+                <!-- 1. El icono en tu barra de navegación o cabecera -->
+                <li class="nav-item">
+                    <i class="bi bi-person-circle login-icon" data-bs-toggle="modal" data-bs-target="#loginModal" role="button" aria-label="Iniciar sesión"></i>
+                </li>
                 <li class="nav-item">
                     <button id="theme-toggle" class="btn btn-outline-secondary rounded-circle theme-btn" aria-label="Cambiar tema">
                         <i class="fas fa-sun"></i>
@@ -84,7 +88,7 @@
 <footer class="site-footer mt-5">
     <div class="footer-grid">
         <div>
-            <h4>CineStore Digital S.A.</h4>
+            <h4>Orbita Cine S.A.</h4>
             <p>Tu tienda visual de peliculas digitales para disfrutar en casa.</p>
         </div>
         <div>
@@ -102,7 +106,7 @@
     <div class="social-media">
         <a href="https://www.facebook.com" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
         <a href="https://www.instagram.com" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-        <a href="https://www.twitter.com" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="https://x.com" target="_blank" aria-label="X"><i class="bi bi-twitter-x"></i></a>
         <a href="https://www.linkedin.com" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
         <a href="https://www.github.com" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
     </div>
@@ -110,6 +114,152 @@
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.817284889395!2d-78.4897896852463!3d-0.18659999999999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91d59a6a3b5e3b5f%3A0x3b5e3b5f3b5e3b5f!2sAv.%20de%20la%20Carolina%2C%20Quito!5e0!3m2!1ses!2sec!4v1622607335911!5m2!1ses!2sec" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
     </div>
 </footer>
+
+<!-- 2. Formulario Modal de Login -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content custom-modal p-3">
+
+            <!-- Título -->
+            <div class="modal-header border-0 justify-content-center mt-3">
+                <h2 class="modal-title fw-bold text-dark" id="loginModalLabel">Iniciar sesión</h2>
+            </div>
+
+            <div class="modal-body">
+                <form id="login-form" action="#" method="POST">
+
+                    <!-- Input Username -->
+                    <div class="mb-4">
+                        <label for="username" class="form-label text-muted small fw-bold">Usuario</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent"><i class="bi bi-person text-muted"></i></span>
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Escribe tu usuario" autocomplete="username" required>
+                        </div>
+                    </div>
+
+                    <!-- Input Password -->
+                    <div class="mb-3">
+                        <label for="password" class="form-label text-muted small fw-bold">Contraseña</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent"><i class="bi bi-lock text-muted"></i></span>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Escribe tu contraseña" autocomplete="current-password" required>
+                        </div>
+                    </div>
+
+                    <!-- Forgot password -->
+                    <div class="text-end mb-4">
+                        <a href="#" class="text-muted small text-decoration-none">¿Olvidaste tu contraseña?</a>
+                    </div>
+
+                    <!-- Botón LOGIN con gradiente -->
+                    <div class="d-grid mb-5">
+                        <button type="submit" class="btn btn-login text-white rounded-pill py-2">INICIAR SESIÓN</button>
+                    </div>
+
+                    <!-- Redes Sociales -->
+                    <div class="text-center mb-3">
+                        <span class="text-muted small">O continúa con</span>
+                    </div>
+                    <div class="d-flex justify-content-center gap-3 mb-5">
+                        <a href="#" class="btn btn-social btn-facebook text-white rounded-circle"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="btn btn-social btn-x text-white rounded-circle" aria-label="Continuar con X"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="btn btn-social btn-google text-white rounded-circle"><i class="bi bi-google"></i></a>
+                    </div>
+
+                    <!-- Enlace de registro inferior -->
+                    <div class="text-center mt-4 mb-2">
+                        <span class="text-muted small d-block mb-1">¿No tienes cuenta?</span>
+                        <a href="#" class="text-dark text-decoration-none small fw-bold" data-bs-toggle="modal" data-bs-target="#signupModal" data-bs-dismiss="modal">Crear una cuenta</a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 3. Formulario Modal de Registro -->
+<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content custom-modal p-3">
+
+            <div class="modal-header border-0 justify-content-center mt-3">
+                <h2 class="modal-title fw-bold text-dark" id="signupModalLabel">Crear cuenta</h2>
+            </div>
+
+            <div class="modal-body">
+                <form id="signup-form" action="#" method="POST" novalidate>
+                    <div class="mb-4">
+                        <label for="signupName" class="form-label text-muted small fw-bold">Nombre completo</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text bg-transparent"><i class="bi bi-person text-muted"></i></span>
+                            <input type="text" class="form-control" id="signupName" name="name" placeholder="Tu nombre" autocomplete="name" required>
+                            <div class="invalid-feedback">Ingresa tu nombre.</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="signupEmail" class="form-label text-muted small fw-bold">Correo</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text bg-transparent"><i class="bi bi-envelope text-muted"></i></span>
+                            <input type="email" class="form-control" id="signupEmail" name="email" placeholder="tu@email.com" autocomplete="email" required>
+                            <div class="invalid-feedback">Ingresa un correo válido.</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="signupUsername" class="form-label text-muted small fw-bold">Usuario</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text bg-transparent"><i class="bi bi-at text-muted"></i></span>
+                            <input type="text" class="form-control" id="signupUsername" name="username" placeholder="Elige un usuario" autocomplete="username" required>
+                            <div class="invalid-feedback">El usuario es obligatorio.</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="signupPassword" class="form-label text-muted small fw-bold">Contraseña</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text bg-transparent"><i class="bi bi-lock text-muted"></i></span>
+                            <input type="password" class="form-control" id="signupPassword" name="password" placeholder="Crea una contraseña" autocomplete="new-password" minlength="6" required>
+                            <div class="invalid-feedback">La contraseña debe tener al menos 6 caracteres.</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="signupPasswordConfirm" class="form-label text-muted small fw-bold">Confirmar contraseña</label>
+                        <div class="input-group has-validation">
+                            <span class="input-group-text bg-transparent"><i class="bi bi-shield-lock text-muted"></i></span>
+                            <input type="password" class="form-control" id="signupPasswordConfirm" name="passwordConfirm" placeholder="Repite tu contraseña" autocomplete="new-password" minlength="6" required>
+                            <div class="invalid-feedback">Las contraseñas no coinciden.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="checkbox" value="1" id="signupTerms" required>
+                        <label class="form-check-label text-muted small" for="signupTerms">
+                            Acepto los términos y condiciones
+                        </label>
+                        <div class="invalid-feedback">Debes aceptar los términos para continuar.</div>
+                    </div>
+
+                    <div class="d-grid mb-3">
+                        <button type="submit" class="btn btn-signup text-white rounded-pill py-2">CREAR CUENTA</button>
+                    </div>
+
+                    <div id="signupSuccess" class="alert alert-success py-2 small d-none" role="alert">
+                        Cuenta creada (demo). Ya puedes iniciar sesión.
+                    </div>
+
+                    <div class="text-center mt-3 mb-2">
+                        <span class="text-muted small d-block mb-1">¿Ya tienes cuenta?</span>
+                        <a href="#" class="text-dark text-decoration-none small fw-bold" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal">Volver a iniciar sesión</a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 <script src="js/script.js"></script>

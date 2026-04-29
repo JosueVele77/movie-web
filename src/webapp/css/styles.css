@@ -6,6 +6,7 @@
     --accent-color: #f1b34e; /* Tono naranja/dorado del mockup */
     --accent-hover: #d69837;
     --nav-bg: #141418; /* Fondo de navegación oscuro */
+    --login-icon-color: #9aa0a6; /* Gris para el icono de login */
 }
 
 /* Variables para el modo claro */
@@ -14,6 +15,7 @@
     --card-bg: #ffffff; /* Fondo de tarjetas blanco */
     --text-color: #212529; /* Color de texto oscuro para contraste */
     --nav-bg: #ffffff; /* Fondo de navegación blanco */
+    --login-icon-color: #6c757d; /* Gris Bootstrap en modo claro */
 }
 
 body {
@@ -93,6 +95,18 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 15px; /* Increased gap */
+}
+
+/* Icono de login en navbar */
+.login-icon {
+    cursor: pointer;
+    font-size: 1.8rem;
+    color: var(--login-icon-color);
+    transition: opacity 0.2s ease;
+}
+
+.login-icon:hover {
+    opacity: 0.85;
 }
 
 .navbar-brand .brand-logo {
@@ -259,3 +273,105 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* =========================================
+   ESTILOS DEL MODAL DE LOGIN
+   ========================================= */
+
+/* Contenedor principal del modal */
+.custom-modal {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* Estilo para los inputs: solo borde inferior como en el diseño */
+.custom-modal .form-control {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    padding-left: 10px;
+    box-shadow: none;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+/* Iconos dentro de los inputs */
+.custom-modal .input-group-text {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    border-bottom: 2px solid #f0f0f0;
+    padding-left: 0;
+}
+
+/* Efecto focus en los inputs */
+.custom-modal .form-control:focus,
+.custom-modal .form-control:focus + .input-group-text {
+    border-color: #c464f4; /* Tono morado al hacer clic */
+}
+
+/* Feedback de validación (para que destaque con el borde inferior) */
+.custom-modal .form-control.is-invalid {
+    border-bottom-color: #dc3545;
+}
+
+.custom-modal .form-control.is-valid {
+    border-bottom-color: #198754;
+}
+
+.custom-modal .form-check-input.is-invalid {
+    border-color: #dc3545;
+}
+
+/* Botón principal con gradiente */
+.btn-login {
+    background: linear-gradient(90deg, #60d2db 0%, #d94df5 100%);
+    border: none;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: opacity 0.3s ease;
+}
+
+/* Botón de registro */
+.btn-signup {
+    background: linear-gradient(90deg, #1d4ed8 0%, #7c3aed 100%);
+    border: none;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: opacity 0.3s ease;
+}
+
+.btn-signup:hover {
+    opacity: 0.9;
+    color: white;
+}
+
+.btn-login:hover {
+    opacity: 0.85;
+    color: white;
+}
+
+/* Botones circulares de redes sociales */
+.btn-social {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+    font-size: 1.2rem;
+}
+
+.btn-social:hover {
+    transform: scale(1.1);
+}
+
+/* Colores de marca para redes sociales */
+.btn-facebook { background-color: #3b5998; }
+.btn-twitter,
+.btn-x { background-color: #111; }
+.btn-x:hover,
+.btn-twitter:hover { background-color: #000; }
+.btn-google { background-color: #ea4335; }
