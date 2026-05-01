@@ -135,9 +135,7 @@ async function fetchAndRenderCarousel() {
 
 // Function to open movie details
 function openMovieDetail(movieId) {
-    // You can redirect to a new page or open a modal
-    // For this example, let's redirect to a detail page with the movie ID in the URL
-    window.location.href = `../pages/detalle.html`;
+    window.location.href = `pages/detalle.html?id=${movieId}`;
 }
 
 async function fetchAndRenderMovies(endpoint, containerId) {
