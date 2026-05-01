@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CineStore - Detalle de la Película</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        .movie-backdrop {
+            width: 100%;
+            height: 60vh;
+            object-fit: cover;
+            filter: brightness(0.4);
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        .detail-container {
+            margin-top: 15vh;
+            background: rgba(var(--bg-color-rgb), 0.85); /* Requires rgba variable if we want blur, or just use solid */
+            background-color: var(--bg-color);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        [data-bs-theme="light"] .detail-container {
+             background-color: rgba(255, 255, 255, 0.95);
+        }
+
+        .poster-img {
+            width: 100%;
+            max-width: 350px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            margin-top: -100px; /* Poster sticks out top */
+        }
+        .genre-badge {
+            background-color: var(--accent-color);
+            color: #000;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        /* Skeleton loading styles */
+        .skeleton {
+            background-color: #333;
+            border-radius: 4px;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        [data-bs-theme="light"] .skeleton {
+             background-color: #e0e0e0;
+        }
+
+        .skeleton-text { height: 20px; margin-bottom: 10px; width: 100%; }
+        .skeleton-title { height: 40px; margin-bottom: 15px; width: 60%; }
+        .skeleton-poster { height: 500px; width: 100%; max-width: 350px; margin-top: -100px; border-radius: 10px;}
+
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        #loading-state, #error-state {
+            padding-top: 15vh;
+        }
+    </style>
+</head>
+<body>
+<div id="stars-container"></div>
+<div class="planet"></div>
+
+<nav class="navbar navbar-expand-lg custom-navbar py-3 sticky-top" style="background-color: rgba(0,0,0,0.8);">
+    <div class="container-fluid px-4 px-lg-5">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="../index.html">
+            <img src="../img/logo-cinestore.svg" alt="CineStore" class="brand-logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3172/3172552.png'">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <form class="d-flex mx-auto search-form my-2 my-lg-0" role="search">
+                <div class="input-group">
+                    <span class="input-group-text bg-transparent border-end-0 search-icon"><i class="fas fa-search"></i></span>
+                    <input class="form-control border-start-0 ps-0 search-input" type="search" placeholder="Buscar..." aria-label="Search">
+                </div>
+            </form>
+
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center gap-3">
+                <li class="nav-item"><a class="nav-link" href="../index.html">Volver al Inicio</a></li>
+                <li class="nav-item">
+                    <a href="login.html" class="nav-link" aria-label="Iniciar sesión">
+                        <i class="bi bi-person-circle login-icon" role="button"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <button id="theme-toggle" class="btn btn-outline-secondary rounded-circle theme-btn" aria-label="Cambiar tema">
+                        <i class="fas fa-sun"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Div to hold dynamic backdrop image -->
+<img id="movieBackdrop" class="movie-backdrop" src="" alt="" style="display: none;">
+
+<div class="container pb-5">
+    <!-- Loading State -->
+    <div id="loading-state" class="row justify-content-center">
+        <div class="col-12 col-md-10 detail-container row">
+            <div class="col-md-4 text-center text-md-start">
+                 <div class="skeleton skeleton-poster mx-auto mx-md-0"></div>
+            </div>
+            <div class="col-md-8 mt-4 mt-md-0">
+                <div class="skeleton skeleton-title"></div>
+                <div class="d-flex gap-2 mb-4">
+                     <div class="skeleton" style="width: 80px; height: 30px; border-radius: 20px;"></div>
+                     <div class="skeleton" style="width: 80px; height: 30px; border-radius: 20px;"></div>
+                </div>
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text" style="width: 80%;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error State -->
+    <div id="error-state" class="text-center d-none" style="margin-top: 20vh;">
+        <i class="bi bi-exclamation-triangle text-warning" style="font-size: 4rem;"></i>
+        <h2 class="mt-3">No se pudo cargar la película</h2>
+        <p class="text-muted">Es posible que la película no exista o haya un problema de conexión.</p>
+        <a href="../index.html" class="btn btn-primary mt-3 rounded-pill px-4">Volver al Inicio</a>
+    </div>
+
+    <!-- Movie Details Content -->
+    <div id="movie-content" class="row justify-content-center d-none">
+        <div class="col-12 col-md-10 detail-container row">
+
+            <div class="col-md-4 text-center text-md-start">
+                <img id="moviePoster" src="" alt="Movie Poster" class="poster-img img-fluid">
+
+                <div class="d-grid gap-2 mt-4">
+                    <button class="btn btn-primary rounded-pill fw-bold py-2 btn-login" style="border:none;">
+                        <i class="bi bi-ticket-perforated me-2"></i> COMPRAR ENTRADAS
+                    </button>
+                    <button class="btn btn-outline-light rounded-pill fw-bold py-2 border-secondary" style="color:var(--text-color);">
+                         <i class="bi bi-play-circle me-2"></i> VER TRAILER
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-md-8 mt-4 mt-md-0">
+                <div class="d-flex justify-content-between align-items-start flex-wrap">
+                    <h1 id="movieTitle" class="display-5 fw-bold mb-2"></h1>
+                    <div class="d-flex align-items-center bg-dark rounded-pill px-3 py-1 border border-secondary">
+                        <i class="fas fa-star text-warning me-2"></i>
+                        <span id="movieRating" class="fw-bold fs-5 text-white"></span>
+                        <span class="text-muted ms-1 small">/10</span>
+                    </div>
+                </div>
+
+                <p id="movieTagline" class="text-muted fst-italic fs-5 mb-3"></p>
+
+                <div id="movieGenres" class="mb-4">
+                    <!-- Genres will be injected here -->
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-sm-4 mb-2">
+                        <div class="text-muted small text-uppercase fw-bold">Fecha de Estreno</div>
+                        <div id="movieReleaseDate" class="fs-6"></div>
+                    </div>
+                    <div class="col-sm-4 mb-2">
+                        <div class="text-muted small text-uppercase fw-bold">Duración</div>
+                        <div id="movieRuntime" class="fs-6"></div>
+                    </div>
+                    <div class="col-sm-4 mb-2">
+                        <div class="text-muted small text-uppercase fw-bold">Estado</div>
+                        <div id="movieStatus" class="fs-6"></div>
+                    </div>
+                </div>
+
+                <h4 class="fw-bold border-bottom border-secondary pb-2 mb-3">Sinopsis</h4>
+                <p id="movieOverview" class="fs-6" style="line-height: 1.6;"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="site-footer mt-5">
+    <div class="footer-grid">
+        <div>
+            <h4>Orbita Cine S.A.</h4>
+            <p>Tu tienda visual de peliculas digitales para disfrutar en casa.</p>
+        </div>
+        <div>
+            <h4>Contacto</h4>
+            <p>Email: soporte@cinestoredigital.com</p>
+            <p>Telefono: +52 55 7812 4455</p>
+        </div>
+        <div>
+            <h4>Oficinas</h4>
+            <p>Av. La Carolina, Piso 12</p>
+            <p>Quito, Ecuador</p>
+            <p>Lun a Vie: 9:00 a 18:00</p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<script>
+    const API_KEY = 'e8351fedf872a5de8e6614d8f166a260';
+    const BASE_URL = 'https://api.themoviedb.org/3';
+    const IMG_URL_ORIGINAL = 'https://image.tmdb.org/t/p/original';
+    const IMG_URL_W500 = 'https://image.tmdb.org/t/p/w500';
+
+    // Theme toggle logic (repeated for standalone page)
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const htmlElement = document.documentElement;
+
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-bs-theme');
+            const icon = themeToggleBtn.querySelector('i');
+
+            if (currentTheme === 'dark') {
+                htmlElement.setAttribute('data-bs-theme', 'light');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            } else {
+                htmlElement.setAttribute('data-bs-theme', 'dark');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+        });
+    }
+
+    // Animated stars logic (repeated)
+    const starsContainer = document.getElementById('stars-container');
+    if (starsContainer) {
+        const numStars = 200;
+        for (let i = 0; i < numStars; i++) {
+            let star = document.createElement('div');
+            star.className = 'star';
+            let x = Math.random() * 100;
+            let y = Math.random() * 100;
+            let size = Math.random() * 2;
+            let duration = Math.random() * 2 + 1;
+
+            star.style.left = `${x}%`;
+            star.style.top = `${y}%`;
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            star.style.animationDuration = `${duration}s`;
+            star.style.animationDelay = `${Math.random() * 2}s`;
+            starsContainer.appendChild(star);
+        }
+    }
+
+    // Fetch movie details
+    document.addEventListener('DOMContentLoaded', async () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const movieId = urlParams.get('id');
+
+        const loadingState = document.getElementById('loading-state');
+        const errorState = document.getElementById('error-state');
+        const movieContent = document.getElementById('movie-content');
+
+        if (!movieId) {
+            loadingState.classList.add('d-none');
+            errorState.classList.remove('d-none');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${BASE_URL}/movie/${movieId}?api_key=${API_KEY}&language=es-ES`);
+
+            if (!response.ok) throw new Error('Movie not found');
+
+            const movie = await response.json();
+
+            // Populate data
+            const backdrop = document.getElementById('movieBackdrop');
+            if (movie.backdrop_path) {
+                 backdrop.src = `${IMG_URL_ORIGINAL}${movie.backdrop_path}`;
+                 backdrop.style.display = 'block';
+            }
+
+            document.getElementById('moviePoster').src = movie.poster_path ? `${IMG_URL_W500}${movie.poster_path}` : 'https://via.placeholder.com/500x750?text=No+Image';
+            document.getElementById('movieTitle').textContent = movie.title;
+            document.getElementById('movieTagline').textContent = movie.tagline || '';
+            document.getElementById('movieRating').textContent = movie.vote_average ? movie.vote_average.toFixed(1) : 'N/A';
+
+            const date = new Date(movie.release_date);
+            document.getElementById('movieReleaseDate').textContent = date.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' }) || 'Desconocida';
+
+            document.getElementById('movieRuntime').textContent = movie.runtime ? `${movie.runtime} min` : 'Desconocida';
+            document.getElementById('movieStatus').textContent = movie.status === 'Released' ? 'Estrenada' : movie.status;
+            document.getElementById('movieOverview').textContent = movie.overview || 'No hay sinopsis disponible para esta película.';
+
+            // Genres
+            const genresContainer = document.getElementById('movieGenres');
+            if (movie.genres && movie.genres.length > 0) {
+                movie.genres.forEach(genre => {
+                    const badge = document.createElement('span');
+                    badge.className = 'genre-badge';
+                    badge.textContent = genre.name;
+                    genresContainer.appendChild(badge);
+                });
+            }
+
+            // Update title
+            document.title = `${movie.title} - CineStore`;
+
+            // Switch views
+            loadingState.classList.add('d-none');
+            movieContent.classList.remove('d-none');
+
+        } catch (error) {
+            console.error('Error:', error);
+            loadingState.classList.add('d-none');
+            errorState.classList.remove('d-none');
+        }
+    });
+</script>
+</body>
+</html>

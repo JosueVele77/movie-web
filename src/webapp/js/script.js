@@ -1,4 +1,3 @@
-// 1. Configuración de la API
 const API_KEY = 'e8351fedf872a5de8e6614d8f166a260';
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMG_URL = 'https://image.tmdb.org/t/p/w500';
@@ -16,49 +15,55 @@ const catalogPanels = {
 
 // --- Animated Starfield ---
 const starsContainer = document.getElementById('stars-container');
-const numStars = 200;
+if (starsContainer) {
+    const numStars = 200;
 
-for (let i = 0; i < numStars; i++) {
-    let star = document.createElement('div');
-    star.className = 'star';
-    let x = Math.random() * 100;
-    let y = Math.random() * 100;
-    let size = Math.random() * 2;
-    let duration = Math.random() * 2 + 1;
+    for (let i = 0; i < numStars; i++) {
+        let star = document.createElement('div');
+        star.className = 'star';
+        let x = Math.random() * 100;
+        let y = Math.random() * 100;
+        let size = Math.random() * 2;
+        let duration = Math.random() * 2 + 1;
 
-    star.style.left = `${x}%`;
-    star.style.top = `${y}%`;
-    star.style.width = `${size}px`;
-    star.style.height = `${size}px`;
-    star.style.animationDuration = `${duration}s`;
-    star.style.animationDelay = `${Math.random() * 2}s`;
+        star.style.left = `${x}%`;
+        star.style.top = `${y}%`;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.animationDuration = `${duration}s`;
+        star.style.animationDelay = `${Math.random() * 2}s`;
 
-    starsContainer.appendChild(star);
+        starsContainer.appendChild(star);
+    }
 }
 
 // --- Sistema de Modo Claro/Oscuro ---
 const themeToggleBtn = document.getElementById('theme-toggle');
 const htmlElement = document.documentElement;
 
-themeToggleBtn.addEventListener('click', () => {
-    const currentTheme = htmlElement.getAttribute('data-bs-theme');
-    const icon = themeToggleBtn.querySelector('i');
+if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', () => {
+        const currentTheme = htmlElement.getAttribute('data-bs-theme');
+        const icon = themeToggleBtn.querySelector('i');
 
-    if (currentTheme === 'dark') {
-        htmlElement.setAttribute('data-bs-theme', 'light');
-        icon.classList.remove('fa-sun');
-        icon.classList.add('fa-moon');
-    } else {
-        htmlElement.setAttribute('data-bs-theme', 'dark');
-        icon.classList.remove('fa-moon');
-        icon.classList.add('fa-sun');
-    }
-});
+        if (currentTheme === 'dark') {
+            htmlElement.setAttribute('data-bs-theme', 'light');
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+        } else {
+            htmlElement.setAttribute('data-bs-theme', 'dark');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        }
+    });
+}
 
 // --- Lógica del Catálogo ---
 function updateCatalogTabs() {
     Object.entries(catalogPanels).forEach(([tab, panel]) => {
-        panel.classList.toggle('hidden', tab !== state.activeCatalogTab);
+        if (panel) {
+            panel.classList.toggle('hidden', tab !== state.activeCatalogTab);
+        }
     });
 
     document.querySelectorAll('.catalog-tab').forEach(button => {
@@ -72,8 +77,72 @@ function getRandomStars() {
     return starsHtml;
 }
 
+// Populate the main carousel with trending movies
+async function fetchAndRenderCarousel() {
+    const carouselInner = document.getElementById('carousel-inner-content');
+    const carouselIndicators = document.querySelector('.carousel-indicators');
+    
+    if (!carouselInner || !carouselIndicators) return;
+
+    try {
+        const response = await fetch(`${BASE_URL}/trending/movie/week?api_key=${API_KEY}&language=es-ES`);
+        const data = await response.json();
+        // Get the top 10 trending movies
+        const movies = data.results.filter(movie => movie.backdrop_path).slice(0, 10);
+
+        if (movies.length === 0) return;
+
+        carouselInner.innerHTML = ''; // Clear fallback content
+        carouselIndicators.innerHTML = ''; // Clear fallback indicators
+
+        movies.forEach((movie, index) => {
+            const isActive = index === 0 ? 'active' : '';
+            const overview = movie.overview ? (movie.overview.substring(0, 150) + '...') : 'Disfruta de esta increíble película en CineStore.';
+            
+            // Generate Indicators
+            const indicator = document.createElement('button');
+            indicator.type = 'button';
+            indicator.dataset.bsTarget = '#mainMovieCarousel';
+            indicator.dataset.bsSlideTo = index;
+            if (index === 0) {
+                indicator.className = 'active';
+                indicator.ariaCurrent = 'true';
+            }
+            indicator.ariaLabel = `Slide ${index + 1}`;
+            carouselIndicators.appendChild(indicator);
+            
+            // Generate Carousel Item
+            const carouselItem = document.createElement('div');
+            carouselItem.className = `carousel-item ${isActive}`;
+            carouselItem.innerHTML = `
+                <img src="https://image.tmdb.org/t/p/original${movie.backdrop_path}" class="d-block w-100 object-fit-cover" alt="${movie.title}" style="min-height: 400px; max-height: 500px; filter: brightness(0.5); cursor: pointer;" onclick="openMovieDetail(${movie.id})">
+                <div class="carousel-caption d-none d-md-block text-start bottom-0 pb-5">
+                    <h1 class="display-4 fw-bold text-white cursor-pointer" onclick="openMovieDetail(${movie.id})">${movie.title}</h1>
+                    <p class="lead mb-4 text-white">${overview}</p>
+                    <div class="d-flex gap-3">
+                        <button class="btn btn-outline-light rounded-pill px-4 py-2" onclick="openMovieDetail(${movie.id})">VER DETALLES</button>
+                        <button class="btn btn-primary rounded-pill px-4 py-2">COMPRAR ENTRADAS</button>
+                    </div>
+                </div>
+            `;
+            carouselInner.appendChild(carouselItem);
+        });
+
+    } catch (error) {
+        console.error('Error fetching carousel movies:', error);
+    }
+}
+
+// Function to open movie details
+function openMovieDetail(movieId) {
+    // You can redirect to a new page or open a modal
+    // For this example, let's redirect to a detail page with the movie ID in the URL
+    window.location.href = `pages/detalle.html?id=${movieId}`;
+}
+
 async function fetchAndRenderMovies(endpoint, containerId) {
     const container = document.getElementById(containerId);
+    if (!container) return;
 
     try {
         const response = await fetch(`${BASE_URL}${endpoint}?api_key=${API_KEY}&language=es-ES&page=1`);
@@ -101,14 +170,14 @@ async function fetchAndRenderMovies(endpoint, containerId) {
             const col = document.createElement('div');
             col.className = 'col';
             col.innerHTML = `
-                <div class="movie-card h-100 d-flex flex-column">
+                <div class="movie-card h-100 d-flex flex-column" style="cursor: pointer;" onclick="openMovieDetail(${movieData.id})">
                     <img src="${IMG_URL}${movieData.posterPath}" alt="${movieData.title}">
                     <div class="movie-info d-flex flex-column flex-grow-1">
                         <h3 class="movie-title">${movieData.title}</h3>
                         <div class="movie-meta">Género · Acción de ${movieData.date}</div>
                         <div class="stars mb-3">${getRandomStars()}</div>
                         
-                        <div class="card-actions d-flex gap-2 mt-auto">
+                        <div class="card-actions d-flex gap-2 mt-auto" onclick="event.stopPropagation();">
                             <button class="btn btn-card-comprar flex-grow-1">COMPRAR</button>
                             <button class="btn btn-card-alquilar flex-grow-1">ALQUILAR</button>
                         </div>
@@ -130,11 +199,14 @@ document.querySelectorAll('.catalog-tab').forEach(button => {
     });
 });
 
-// Inicialización de catálogos
-fetchAndRenderMovies('/movie/now_playing', 'recent-catalog');
-fetchAndRenderMovies('/movie/popular', 'popular-catalog');
-fetchAndRenderMovies('/movie/top_rated', 'top-catalog');
-updateCatalogTabs();
+// Inicialización de catálogos y carrusel (solo si los contenedores existen)
+if (document.getElementById('recent-catalog')) {
+    fetchAndRenderCarousel();
+    fetchAndRenderMovies('/movie/now_playing', 'recent-catalog');
+    fetchAndRenderMovies('/movie/popular', 'popular-catalog');
+    fetchAndRenderMovies('/movie/top_rated', 'top-catalog');
+    updateCatalogTabs();
+}
 
 // --- Login / Registro (solo UI demo) ---
 function setupAuthForms() {
@@ -143,11 +215,8 @@ function setupAuthForms() {
         loginForm.addEventListener('submit', (event) => {
             // Demo: evita recargar la página.
             event.preventDefault();
-
-            const loginModalEl = document.getElementById('loginModal');
-            if (window.bootstrap && loginModalEl) {
-                window.bootstrap.Modal.getOrCreateInstance(loginModalEl).hide();
-            }
+            // Redirige al index después del login simulado
+            window.location.href = '../index.html';
         });
     }
 
@@ -201,23 +270,19 @@ function setupAuthForms() {
             return;
         }
 
-        // Demo OK: muestra mensaje, resetea y vuelve al login.
-        if (successAlert) successAlert.classList.remove('d-none');
+        // Demo OK: muestra mensaje, resetea y redirige al login.
+        if (successAlert) {
+            successAlert.classList.remove('d-none');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 1500);
+        } else {
+             window.location.href = 'login.html';
+        }
 
         signupForm.reset();
         signupForm.classList.remove('was-validated');
         signupForm.querySelectorAll('input').forEach(el => el.classList.remove('is-valid', 'is-invalid'));
-
-        const signupModalEl = document.getElementById('signupModal');
-        const loginModalEl = document.getElementById('loginModal');
-
-        if (window.bootstrap && signupModalEl && loginModalEl) {
-            // Evita superponer dos modals/backdrops.
-            signupModalEl.addEventListener('hidden.bs.modal', () => {
-                window.bootstrap.Modal.getOrCreateInstance(loginModalEl).show();
-            }, { once: true });
-            window.bootstrap.Modal.getOrCreateInstance(signupModalEl).hide();
-        }
     });
 }
 

@@ -221,6 +221,13 @@ body {
     color: #212529 !important;
 }
 
+/* Fix Carousel text colors */
+.carousel-caption h1,
+.carousel-caption p {
+    color: #ffffff !important;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+}
+
 .site-footer {
     background: #0d0d0d; /* Fondo oscuro sólido, se mantiene igual en modo claro */
     border-top: 1px solid #222;
@@ -275,14 +282,15 @@ body {
 }
 
 /* =========================================
-   ESTILOS DEL MODAL DE LOGIN
+   ESTILOS DEL MODAL DE LOGIN Y REGISTRO
    ========================================= */
 
-/* Contenedor principal del modal */
+/* Contenedor principal del modal/tarjeta */
 .custom-modal {
     border-radius: 15px;
     border: none;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    background-color: var(--card-bg);
 }
 
 /* Estilo para los inputs: solo borde inferior como en el diseño */
@@ -293,6 +301,12 @@ body {
     border-radius: 0;
     padding-left: 10px;
     box-shadow: none;
+    border-bottom: 2px solid #555;
+    background-color: transparent;
+    color: var(--text-color);
+}
+
+[data-bs-theme="light"] .custom-modal .form-control {
     border-bottom: 2px solid #f0f0f0;
 }
 
@@ -302,8 +316,13 @@ body {
     border-left: none;
     border-right: none;
     border-radius: 0;
-    border-bottom: 2px solid #f0f0f0;
+    border-bottom: 2px solid #555;
     padding-left: 0;
+    background-color: transparent;
+}
+
+[data-bs-theme="light"] .custom-modal .input-group-text {
+    border-bottom: 2px solid #f0f0f0;
 }
 
 /* Efecto focus en los inputs */
@@ -353,6 +372,29 @@ body {
     color: white;
 }
 
+/* Fix text and outline colors on auth page light mode */
+[data-bs-theme="light"] .custom-modal .btn-outline-light {
+    border-color: #212529 !important;
+    color: #212529 !important;
+}
+
+[data-bs-theme="light"] .custom-modal .btn-outline-light:hover {
+    background-color: #212529;
+    color: #ffffff !important;
+}
+
+/* Fix register link text colors */
+.custom-modal a[href="registro.html"],
+.custom-modal a[href="login.html"]{
+    color: var(--text-color) !important;
+}
+
+[data-bs-theme="light"] .custom-modal a[href="registro.html"],
+[data-bs-theme="light"] .custom-modal a[href="login.html"]{
+    color: #212529 !important;
+    border-color: rgba(0, 0, 0, 0.5) !important;
+}
+
 /* Botones circulares de redes sociales */
 .btn-social {
     width: 45px;
@@ -375,3 +417,27 @@ body {
 .btn-x:hover,
 .btn-twitter:hover { background-color: #000; }
 .btn-google { background-color: #ea4335; }
+/* Fix label and link colors in auth forms for dark mode */
+.custom-modal label,
+.custom-modal a,
+.custom-modal span {
+    color: var(--text-color) !important;
+}
+
+.custom-modal h2 {
+    color: var(--text-color) !important;
+}
+
+[data-bs-theme="light"] .custom-modal label,
+[data-bs-theme="light"] .custom-modal a,
+[data-bs-theme="light"] .custom-modal span {
+    color: #6c757d !important;
+}
+
+[data-bs-theme="light"] .custom-modal h2 {
+    color: #212529 !important;
+}
+/* Helper classes */
+.cursor-pointer {
+    cursor: pointer;
+}
