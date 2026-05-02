@@ -14,7 +14,7 @@
 <div class="planet"></div>
 <nav class="navbar navbar-expand-lg custom-navbar py-3">
     <div class="container-fluid px-4 px-lg-5">
-        <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
             <img src="img/logo-cinestore.svg" alt="CineStore" class="brand-logo">
         </a>
 
@@ -23,22 +23,42 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarContent">
-            <form class="d-flex mx-auto search-form my-2 my-lg-0" role="search">
+            <form class="d-flex mx-auto search-form my-2 my-lg-0" role="search" id="search-form">
                 <div class="input-group">
                     <span class="input-group-text bg-transparent border-end-0 search-icon"><i class="fas fa-search"></i></span>
-                    <input class="form-control border-start-0 ps-0 search-input" type="search" placeholder="Buscar películas, actores, cines..." aria-label="Search">
+                    <input class="form-control border-start-0 ps-0 search-input" type="search" placeholder="Buscar películas..." aria-label="Search" id="search-input">
+                    <button class="btn btn-outline-secondary border-start-0" type="submit" aria-label="Buscar">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="btn btn-outline-secondary" type="button" id="search-clear" aria-label="Limpiar búsqueda">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
             </form>
 
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center gap-3">
-                <li class="nav-item"><a class="nav-link active" href="#">Cartelera</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Próximamente</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Entradas</a></li>
-                <!-- 1. El icono en tu barra de navegación o cabecera -->
                 <li class="nav-item">
+                    <button class="nav-link btn btn-link p-0 text-decoration-none" id="categories-toggle" aria-haspopup="dialog" aria-controls="categories-overlay">
+                        Categorías
+                    </button>
+                </li>
+                <li class="nav-item d-none" id="my-content-link"><a class="nav-link" href="pages/my_content.html">Mi Contenido</a></li>
+                <li class="nav-item d-none" id="favorites-link"><a class="nav-link" href="pages/favorites.html">Favoritos</a></li>
+
+                <li class="nav-item" id="login-link">
                     <a href="pages/login.html" class="nav-link" aria-label="Iniciar sesión">
                         <i class="bi bi-person-circle login-icon" role="button"></i>
                     </a>
+                </li>
+                 <li class="nav-item dropdown d-none" id="user-menu">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle login-icon"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="#">Mi Perfil</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#" id="logout-button">Cerrar Sesión</a></li>
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <button id="theme-toggle" class="btn btn-outline-secondary rounded-circle theme-btn" aria-label="Cambiar tema">
@@ -50,29 +70,33 @@
     </div>
 </nav>
 
+<div id="categories-overlay" class="categories-overlay" aria-hidden="true">
+    <div class="categories-panel">
+        <div class="categories-panel-header">
+            <div>
+                <h5 class="mb-1">Explora por género</h5>
+                <p class="mb-0">Selecciona una categoría para ver lo mejor del catálogo.</p>
+            </div>
+            <button class="btn btn-outline-light" id="categories-close" aria-label="Cerrar">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+        <div class="category-grid" id="categories-menu">
+            <!-- Categories will be populated here by script.js -->
+        </div>
+    </div>
+</div>
+
 <main class="app-shell container-fluid px-4 px-lg-5 mt-4">
 
     <!-- Carousel for movies -->
     <section class="mb-5 position-relative rounded-4 overflow-hidden shadow-lg">
         <div id="mainMovieCarousel" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-indicators">
-                <button type="button" data-bs-target="#mainMovieCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#mainMovieCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                <button type="button" data-bs-target="#mainMovieCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                <!-- Indicators will be populated by script.js -->
             </div>
             <div class="carousel-inner" id="carousel-inner-content">
-                <!-- Fallback static item in case API fails or loads slowly -->
-                <div class="carousel-item active">
-                    <img src="https://image.tmdb.org/t/p/original/tMefBSdJ8e8c5EEC0M52iBvCq51.jpg" class="d-block w-100 object-fit-cover" alt="Dune Banner" style="min-height: 400px; max-height: 500px; filter: brightness(0.5);">
-                    <div class="carousel-caption d-none d-md-block text-start bottom-0 pb-5">
-                        <h1 class="display-4 fw-bold text-white">DUNE: PARTE DOS</h1>
-                        <p class="lead mb-4 text-white">La saga épica continúa en Arrakis.</p>
-                        <div class="d-flex gap-3">
-                            <button class="btn btn-outline-light rounded-pill px-4 py-2">VER TRAILER</button>
-                            <button class="btn btn-primary rounded-pill px-4 py-2">COMPRAR ENTRADAS</button>
-                        </div>
-                    </div>
-                </div>
+                <!-- Carousel items will be populated by script.js -->
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#mainMovieCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -85,10 +109,10 @@
         </div>
     </section>
 
-    <section id="step-catalog" class="view-section">
-        <h3 class="section-title fw-bold mb-4" style="color: var(--accent-color);">ESTRENOS ACTUALES</h3>
+    <section id="catalog-section" class="view-section">
+        <h3 id="catalog-title" class="section-title fw-bold mb-4" style="color: var(--accent-color);">ESTRENOS ACTUALES</h3>
 
-        <div class="catalog-tabs mb-4" role="tablist">
+        <div id="catalog-tabs-container" class="catalog-tabs mb-4" role="tablist">
             <button class="catalog-tab active" type="button" data-tab="recent" role="tab">🎬 Cartelera</button>
             <button class="catalog-tab" type="button" data-tab="popular" role="tab">🔥 Populares</button>
             <button class="catalog-tab" type="button" data-tab="top" role="tab">⭐ Mejor Valoradas</button>
@@ -105,6 +129,8 @@
         <section id="panel-top" class="catalog-panel hidden">
             <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-4" id="top-catalog"></div>
         </section>
+
+        <div id="search-results" class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-4 d-none"></div>
     </section>
 </main>
 

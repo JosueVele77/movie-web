@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="750" viewBox="0 0 500 750" role="img" aria-label="Poster no disponible">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1a1a1a"/>
+      <stop offset="1" stop-color="#303042"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="35%" cy="25%" r="75%">
+      <stop offset="0" stop-color="#f1b34e" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#f1b34e" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="500" height="750" fill="url(#bg)"/>
+  <rect width="500" height="750" fill="url(#glow)"/>
+
+  <g fill="#ffffff" opacity="0.18">
+    <path d="M250 160c-52 0-94 42-94 94s42 94 94 94 94-42 94-94-42-94-94-94zm0 30c35.3 0 64 28.7 64 64s-28.7 64-64 64-64-28.7-64-64 28.7-64 64-64z"/>
+    <path d="M220 220l90 34-90 34z"/>
+  </g>
+
+  <g font-family="Segoe UI, Roboto, Arial, sans-serif" text-anchor="middle">
+    <text x="250" y="430" font-size="34" fill="#ffffff" opacity="0.92" font-weight="700">CineStore</text>
+    <text x="250" y="475" font-size="18" fill="#ffffff" opacity="0.7">Poster no disponible</text>
+  </g>
+
+  <rect x="70" y="540" width="360" height="1" fill="#ffffff" opacity="0.14"/>
+  <g font-family="Segoe UI, Roboto, Arial, sans-serif" fill="#ffffff" opacity="0.55" font-size="14" text-anchor="middle">
+    <text x="250" y="585">Intenta más tarde o revisa tu conexión</text>
+  </g>
+</svg>
+
